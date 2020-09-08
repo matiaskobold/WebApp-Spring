@@ -17,10 +17,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 class UserController {
 
-
+    private final UserModelAssembler assembler;
     private final UserRepository repository;
 
-    UserController(UserRepository repository) {
+    UserController(UserRepository repository, UserModelAssembler assembler) {
+        this.assembler=assembler;
         this.repository = repository;
     }
 
@@ -29,12 +30,11 @@ class UserController {
     @GetMapping("/users")
     CollectionModel<EntityModel<User>> all(){
         List<EntityModel<User>> users = repository.findAll().stream()
-                .map(user -> EntityModel.of(user,
-                        linkTo(methodOn(UserController.class).one(user.getIdUsers())).withSelfRel(),
-                        linkTo(methodOn(UserController.class).all()).withRel("users")))
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(users,
                 linkTo(methodOn(UserController.class).all()).withSelfRel());
+
     }
 
     @PostMapping("/users")
@@ -50,9 +50,7 @@ class UserController {
         User user = repository.findById(id) //
                 .orElseThrow(() -> new UserNotFoundException(id));
 
-        return EntityModel.of(user, //
-                linkTo(methodOn(UserController.class).one(id)).withSelfRel(),
-                linkTo(methodOn(UserController.class).all()).withRel("users"));
+       return assembler.toModel(user);
     }
 
 
