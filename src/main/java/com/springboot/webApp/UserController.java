@@ -1,6 +1,7 @@
 package com.springboot.webApp;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @RestController
 class UserController {
 
+
     private final UserRepository repository;
 
     UserController(UserRepository repository) {
@@ -25,8 +27,14 @@ class UserController {
     // Aggregate root
 
     @GetMapping("/users")
-    List<User> all() {
-        return repository.findAll();
+    CollectionModel<EntityModel<User>> all(){
+        List<EntityModel<User>> users = repository.findAll().stream()
+                .map(user -> EntityModel.of(user,
+                        linkTo(methodOn(UserController.class).one(user.getIdUsers())).withSelfRel(),
+                        linkTo(methodOn(UserController.class).all()).withRel("users")))
+                .collect(Collectors.toList());
+        return CollectionModel.of(users,
+                linkTo(methodOn(UserController.class).all()).withSelfRel());
     }
 
     @PostMapping("/users")
