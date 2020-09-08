@@ -3,6 +3,7 @@ package com.springboot.webApp;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +39,11 @@ class UserController {
     }
 
     @PostMapping("/users")
-    User newUser(@RequestBody User newUser) {
-        return repository.save(newUser);
+    ResponseEntity<?> newUser(@RequestBody User newUser){
+        EntityModel<User> entityModel=assembler.toModel(repository.save(newUser));
+        return ResponseEntity
+                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
+                .body(entityModel);
     }
 
     // Single item
