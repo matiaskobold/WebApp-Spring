@@ -3,86 +3,35 @@ package com.springboot.webApp;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.hateoas.*;
 
 import javax.swing.text.html.parser.Entity;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
-@RestController
+@Controller
+@RequestMapping(path="/demo")
 class UserController {
+    @Autowired
+    private UserRepository repository;
 
-    private final UserModelAssembler assembler;
-    private final UserRepository repository;
-
-    UserController(UserRepository repository, UserModelAssembler assembler) {
-        this.assembler=assembler;
-        this.repository = repository;
+    @PostMapping(path="/add")
+    public @ResponseBody String addNewUser (@RequestParam String first_name, @RequestParam String last_name, @RequestParam String username, @RequestParam String mail_address){
+        User n = new User();
+        n.setUsername(username);
+        n.setFirst_name(first_name);
+        n.setLast_name(last_name);
+        n.setMail_address(mail_address);
+        repository.save(n);
+        return "Saved";
     }
 
-    // Aggregate root
-
-    @GetMapping("/users")
-    CollectionModel<EntityModel<User>> all(){
-        List<EntityModel<User>> users = repository.findAll().stream()
-                .map(assembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(users,
-                linkTo(methodOn(UserController.class).all()).withSelfRel());
-
-    }
-
-    @PostMapping("/users")
-    ResponseEntity<?> newUser(@RequestBody User newUser){
-        EntityModel<User> entityModel=assembler.toModel(repository.save(newUser));
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
-    }
-
-    // Single item
-
-    @GetMapping("/users/{id}")
-    EntityModel<User> one(@PathVariable Long id) {
-
-        User user = repository.findById(id) //
-                .orElseThrow(() -> new UserNotFoundException(id));
-
-       return assembler.toModel(user);
-    }
-
-
-    @PutMapping("/users/{id}")
-    ResponseEntity<?> replaceUser(@RequestBody User newUser, @PathVariable Long id){
-        User updatedUser=repository.findById(id)
-                .map(user -> {
-                    user.setMail_address(newUser.getMail_address());
-                    user.setLast_name(newUser.getLast_name());
-                    user.setFirst_name(newUser.getFirst_name());
-                    user.setUsername(newUser.getUsername());
-                    return repository.save(user);
-                    })
-                .orElseGet(()->{
-                    newUser.setIdUsers(id);
-                    return repository.save(newUser);
-                });
-        EntityModel<User> entityModel = assembler.toModel(updatedUser);
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
-    }
-
-    @DeleteMapping("/users/{id}")
-    ResponseEntity<?> deleteUser(@PathVariable Long id){
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping(path="all")
+    public @ResponseBody Iterable<User> getAllUsers(){
+        return repository.findAll();
     }
 }

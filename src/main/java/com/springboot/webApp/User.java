@@ -1,18 +1,18 @@
 package com.springboot.webApp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 public class User {
-    private @Id @GeneratedValue Long idUsers;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long idUsers;
     private String first_name;
     private String last_name;
     private String username;
     private String mail_address;
-    int i;
+
     public User() {
     }
 
