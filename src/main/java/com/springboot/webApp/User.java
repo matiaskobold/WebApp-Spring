@@ -7,7 +7,9 @@ import java.util.Objects;
 
 @Entity
 public class User {
-    private @Id @GeneratedValue Long idUsers;
+    @Id
+    @GeneratedValue
+    private Long idUsers;
     private String first_name;
     private String last_name;
     private String username;
