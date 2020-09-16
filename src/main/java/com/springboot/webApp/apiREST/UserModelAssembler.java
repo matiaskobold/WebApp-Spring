@@ -1,5 +1,6 @@
-package com.springboot.webApp;
+package com.springboot.webApp.apiREST;
 
+import com.springboot.webApp.model.User;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,8 @@ class UserModelAssembler implements RepresentationModelAssembler<User, EntityMod
     @Override
     public EntityModel<User> toModel(User user){
         return EntityModel.of(user,
-                linkTo(methodOn(UserController.class).one(user.getIdUsers())).withSelfRel(),
-                linkTo(methodOn(UserController.class).all()).withRel("users"));
+                linkTo(methodOn(UserControllerAPIREST.class).one(user.getIdUsers())).withSelfRel(),
+                linkTo(methodOn(UserControllerAPIREST.class).all()).withRel("users"));
     }
 }
 

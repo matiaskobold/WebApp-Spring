@@ -1,8 +1,10 @@
-package com.springboot.webApp;
+package com.springboot.webApp.apiREST;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.springboot.webApp.repository.UserRepository;
+import com.springboot.webApp.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +15,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.hateoas.*;
 
-import javax.swing.text.html.parser.Entity;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-class UserController {
+class UserControllerAPIREST {
 
     private final UserModelAssembler assembler;
     private final UserRepository repository;
 
-    UserController(UserRepository repository, UserModelAssembler assembler) {
+    UserControllerAPIREST(UserRepository repository, UserModelAssembler assembler) {
         this.assembler=assembler;
         this.repository = repository;
     }
@@ -36,7 +36,7 @@ class UserController {
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
         return CollectionModel.of(users,
-                linkTo(methodOn(UserController.class).all()).withSelfRel());
+                linkTo(methodOn(UserControllerAPIREST.class).all()).withSelfRel());
 
     }
 
