@@ -80,9 +80,15 @@ class UserController {
                 .body(entityModel);
     }
 
+    //Deletes single user by ID, throws exception if user is not found.
+    //DELETE: localhost:8080/users/{id number}
     @DeleteMapping("/users/{id}")
-    ResponseEntity<?> deleteUser(@PathVariable Long id){
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    CollectionModel<EntityModel<User>> deleteUser(@PathVariable Long id){
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return this.all();
+        }
+        else throw new UserNotFoundException(id);
     }
+
 }
