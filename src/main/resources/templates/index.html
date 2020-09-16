@@ -23,6 +23,7 @@
             <th scope="col">Last Name</th>
             <th scope="col">Username</th>
             <th scope="col">Email</th>
+            <th> Actions </th>
 
         </tr>
 
@@ -34,6 +35,8 @@
             <td th:text="${user.last_name}"></td>
             <td th:text="${user.username}"></td>
             <td th:text="${user.mail_address}"></td>
+            <td><a th:href="@{showFormForUpdate/{id}(id=${user.idUsers})}" class="btn btn-secondary">Update</a>
+                <a th:href="@{deleteUser/{id}(id=${user.idUsers})}" class="btn btn-danger">Delete</a> </td>
         </tr>
         </tbody>
 
