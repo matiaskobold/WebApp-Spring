@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<div class="container">
+    <h1>Update User</h1>
+    <hr>
+
+    <form action="#" th:action="@{/saveUser}" th:object="${user}" method="post">
+        <input type="hidden" th:field="*{idUsers}">
+        <input type="text" th:field="*{first_name}" placeholder="User's new first name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{last_name}" placeholder="User's new last name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{username}" placeholder="User's new username" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{mail_address}" placeholder="User's new mail address" class="form-control mb-4 col-4">
+
+        <button type="submit" class="btn btn-primary">Update User</button>
+    </form>
+
+
+</div>
+</body>
+</html>

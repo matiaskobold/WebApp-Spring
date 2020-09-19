@@ -1,4 +1,4 @@
-package com.springboot.webApp;
+package com.springboot.webApp.apiREST;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
