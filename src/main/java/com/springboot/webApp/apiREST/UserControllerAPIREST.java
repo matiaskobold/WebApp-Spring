@@ -91,4 +91,12 @@ class UserControllerAPIREST {
         else throw new UserNotFoundException(id);
     }
 
+
+
+    //testing json ajax
+    @GetMapping("/testGetUsers")
+    List<User> test() {
+        return repository.findAll();
+    }
+
 }

@@ -48,6 +48,12 @@ public class UserController {
         this.userService.deleteUserByID(id);
         return "redirect:/";
     }
+//testing json ajax
+    @GetMapping("/showAllUsersAjax")
+    public String test(){
+        return "showAllUsersAJAX";
+    }
+
 
 /*
     @RequestMapping("/availableName.do")
