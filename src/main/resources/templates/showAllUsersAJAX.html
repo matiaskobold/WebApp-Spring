@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Show All Users using AJAX</title>
+    <meta charset="UTF-8">
+    <script
+            src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+                $('#datatable').DataTable({
+                    ajax: {
+                        url: 'localhost:8080/testGetUsers',
+                        dataSrc: ''
+                    },
+                    columns: [
+                        {data: 'idUsers'},
+                        {data: 'first_name'},
+                        {data: 'last_name'},
+                        {data: 'username'},
+                        {data: 'mail_address'}
+                    ]
+
+                })
+            }
+        )
+
+    </script>
+</head>
+<body>
+
+<div style="width: 700px; padding: 5px; border: 1px solid black;">
+    <table id="datatable">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Username</th>
+            <th>Mail Address</th>
+        </tr>
+        </thead>
+    </table>
+</div>
+</body>
+</html>
