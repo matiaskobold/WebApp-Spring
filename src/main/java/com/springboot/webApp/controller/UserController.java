@@ -5,10 +5,9 @@ import com.springboot.webApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -49,4 +48,17 @@ public class UserController {
         this.userService.deleteUserByID(id);
         return "redirect:/";
     }
+
+/*
+    @RequestMapping("/availableName.do")
+    public @ResponseBody String availableName(@RequestParam("firstName") String firstName){
+        if (userService.checkFirstNameIfAvailable(firstName)){
+            return "nombre de usuario disponible";
+        }
+        else{
+            return "nombre de usuario <strong>no</strong> disponible";
+        }
+    }
+    */
+
 }
