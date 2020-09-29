@@ -13,11 +13,32 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 
 
+<!-- /testGetUsers returns a JSON as following:
+[
+    {
+        "idUsers": 27,
+        "first_name": "Florencia",
+        "last_name": "Kobold",
+        "username": "Fk",
+        "mail_address": "florenciakobold@gmail.com"
+    },
+    {
+        "idUsers": 28,
+        "first_name": "Matias",
+        "last_name": "Kobold",
+        "username": "37988491",
+        "mail_address": "matiaskobold@gmail.com"
+    }
+]
+
+
+-->
+
     <script type="text/javascript">
         $(document).ready(function () {
                 $('#datatable').DataTable({
                     ajax: {
-                        url: 'localhost:8080/testGetUsers',
+                        url: '/testGetUsers',
                         dataSrc: ''
                     },
                     columns: [
