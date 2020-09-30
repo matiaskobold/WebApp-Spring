@@ -7,18 +7,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 public class UserController {
 
     @Autowired
     private UserService userService;
     //display list of users
-    @GetMapping("/")
+    @GetMapping("/usersTable")
     public String viewHomePage(Model model){
         model.addAttribute("listUsers", userService.getAllUsers());
-        return "index";
+        return "usersTableIndex";
     }
     @GetMapping("/showNewUserForm")
     public String showNewUserForm(Model model){
@@ -32,7 +30,7 @@ public class UserController {
     public String saveUser(@ModelAttribute("user") User user){
         //Save user to DB
         userService.saveUser(user);
-        return "redirect:/";
+        return "redirect:/usersTable";
     }
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value="id") long id, Model model){
@@ -46,7 +44,7 @@ public class UserController {
     public String deleteUser(@PathVariable(value="id") long id, Model model){
         //call delete user method
         this.userService.deleteUserByID(id);
-        return "redirect:/";
+        return "redirect:/usersTable";
     }
 //testing json ajax
     @GetMapping("/showAllUsersAjax")
