@@ -15,6 +15,16 @@ public class HomeController {
     @RequestMapping("/")
     public String home(Model model){
         model.addAttribute("listUsers", userService.getAllUsers());
-        return "usersTableIndex";
+        return "home";
+    }
+
+    @RequestMapping("/login")
+    public String loginPage(){
+        return "login";
+    }
+
+    @RequestMapping("/logout-success")
+    public String logOut(){
+        return "logout";
     }
 }

@@ -87,7 +87,7 @@ class UserControllerAPIREST {
 
 
 
-    //testing json ajax
+    //for JSON AJAX DATATABLES
     @GetMapping("/testGetUsers")
     List<User> test() {
         return repository.findAll();
