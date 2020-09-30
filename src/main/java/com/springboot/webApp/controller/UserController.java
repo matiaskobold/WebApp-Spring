@@ -20,7 +20,7 @@ public class UserController {
     }
     @GetMapping("/showNewUserForm")
     public String showNewUserForm(Model model){
-        //Create model atribute to bind next form (in new_user) data
+        //Create model atribute to bind next form data (in new_user.html)
         User user= new User();
         model.addAttribute("user", user);
         return "new_user";

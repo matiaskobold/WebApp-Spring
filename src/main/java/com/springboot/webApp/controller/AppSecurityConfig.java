@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.AntPathMatcher;
 
@@ -32,6 +33,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
+    @Bean
+    public PasswordEncoder encoder(){
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -40,6 +46,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()  //permits /login (mapped to HomeController.loginPage()) so everyone can see login page
                 .antMatchers("/users").permitAll()  //permits /users from API REST through Spring Security without authentication
                 .antMatchers("/users/{id}").permitAll()
+                .antMatchers("/newUserLogin").permitAll()
+                .antMatchers("/saveUserLogin").permitAll()
                 .anyRequest().authenticated()   //all others requests should be authenticated
                 .and()
                 .formLogin()
