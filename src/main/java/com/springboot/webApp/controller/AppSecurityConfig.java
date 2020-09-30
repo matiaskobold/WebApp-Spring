@@ -37,7 +37,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()  //permits /login (mapped to HomeController.loginPage) so everyone can see login page
+                .antMatchers("/login").permitAll()  //permits /login (mapped to HomeController.loginPage()) so everyone can see login page
                 .antMatchers("/users").permitAll()  //permits /users from API REST through Spring Security without authentication
                 .antMatchers("/users/{id}").permitAll()
                 .anyRequest().authenticated()   //all others requests should be authenticated
@@ -47,8 +47,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().invalidateHttpSession(true)
                 .clearAuthentication(true)
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/logout-success").permitAll();
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) //  /logout is the request link that should be used for logging out
+                .logoutSuccessUrl("/logout-success").permitAll();       // when logout request is called, go to /logout-success (mapped by HomeController.logout())
 
     }
 /*  @Bean
