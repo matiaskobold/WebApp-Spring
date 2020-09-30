@@ -14,7 +14,7 @@ public class UserController {
     private UserService userService;
     //display list of users
     @GetMapping("/usersTable")
-    public String viewHomePage(Model model){
+    public String viewUsersTable(Model model){
         model.addAttribute("listUsers", userService.getAllUsers());
         return "usersTableIndex";
     }
