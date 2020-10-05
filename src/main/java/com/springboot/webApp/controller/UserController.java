@@ -1,7 +1,8 @@
 package com.springboot.webApp.controller;
 
 import com.springboot.webApp.model.User;
-import com.springboot.webApp.service.UserService;
+import com.springboot.webApp.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
     //display list of users
     @GetMapping("/usersTable")
     public String viewUsersTable(Model model){
-        model.addAttribute("listUsers", userService.getAllUsers());
+        model.addAttribute("listUsers", userRepository.findAll());
         return "usersTableIndex";
     }
     @GetMapping("/showNewUserForm")
@@ -29,13 +30,13 @@ public class UserController {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user){
         //Save user to DB
-        userService.saveUser(user);
+        userRepository.save(user);
         return "redirect:/usersTable";
     }
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value="id") long id, Model model){
         //get User from the service
-        User user = userService.getUserById(id);
+        User user = userRepository.getOne(id);
         //set User as a model attribute to pre-populate the next form data (in update_user)
         model.addAttribute("user", user);
         return "update_user";
@@ -43,7 +44,7 @@ public class UserController {
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable(value="id") long id, Model model){
         //call delete user method
-        this.userService.deleteUserByID(id);
+        userRepository.deleteById(id);
         return "redirect:/usersTable";
     }
 //testing json ajax
