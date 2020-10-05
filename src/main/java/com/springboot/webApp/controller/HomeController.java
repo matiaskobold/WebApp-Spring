@@ -2,8 +2,9 @@ package com.springboot.webApp.controller;
 
 import com.springboot.webApp.model.User;
 import com.springboot.webApp.model.UserLogin;
+import com.springboot.webApp.repository.UserRepository;
 import com.springboot.webApp.service.UserLoginService;
-import com.springboot.webApp.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
     private UserLoginService userLoginService;
 
     @RequestMapping("/")
     public String home(Model model){
-        model.addAttribute("listUsers", userService.getAllUsers());
+        model.addAttribute("listUsers", userRepository.findAll());
         return "home";
     }
 

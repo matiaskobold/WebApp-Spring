@@ -1,37 +1,63 @@
 package com.springboot.webApp.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import net.minidev.json.annotate.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
+
 public class User {
     @Id
-    @GeneratedValue
-    private Long idUsers;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull
     private String first_name;
+
+    @NotNull
     private String last_name;
+
+    @NotNull
     private String username;
+
+    @NotNull
     private String mail_address;
+
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(fetch= FetchType.LAZY, optional = false)
+    @JoinColumn(name="clan_id", nullable = false)
+    @OnDelete(action= OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private Clan clan;
 
     public User() {
     }
 
-    public User(String first_name, String last_name, String username, String mail_address) {
+    public User(@NotNull String first_name, @NotNull String last_name, @NotNull String username, @NotNull String mail_address) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.username = username;
         this.mail_address = mail_address;
     }
-
-
-    public Long getIdUsers() {
-        return idUsers;
+    public Clan getClan() {
+        return clan;
     }
 
-    public void setIdUsers(Long idUsers) {
-        this.idUsers = idUsers;
+    public void setClan(Clan clan) {
+        this.clan = clan;
+    }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long idUsers) {
+        this.id = idUsers;
     }
 
     public String getFirst_name() {
@@ -71,22 +97,22 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(idUsers, user.idUsers) &&
-                Objects.equals(first_name, user.first_name) &&
-                Objects.equals(last_name, user.last_name) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(mail_address, user.mail_address);
+        return getId().equals(user.getId()) &&
+                getFirst_name().equals(user.getFirst_name()) &&
+                getLast_name().equals(user.getLast_name()) &&
+                getUsername().equals(user.getUsername()) &&
+                getMail_address().equals(user.getMail_address());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsers, first_name, last_name, username, mail_address);
+        return Objects.hash(id, first_name, last_name, username, mail_address);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "idUsers=" + idUsers +
+                "idUsers=" + id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
                 ", username='" + username + '\'' +
