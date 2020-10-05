@@ -13,30 +13,29 @@
 <body>
 
 <div class="container my-2">
-    <a th:href = "@{/showNewUserForm}" class="btn btn-primary" >Add user</a>
-    <h1>Users list</h1>
+    <a th:href = "@{/showNewClanForm}" class="btn btn-primary" >Add Clan</a>
+    <h1>Clans list</h1>
     <table border="1" class="table table-sm table-striped">
         <thead class="thead-dark">
         <tr>
             <th scope="col">ID</th>
-            <th scope="col">First name</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
+            <th scope="col">Name</th>
+            <th scope="col">Language</th>
+            <th scope="col">Description</th>
             <th> Actions </th>
 
         </tr>
 
         </thead>
         <tbody>
-        <tr th:each="user:${listUsers}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.first_name}"></td>
-            <td th:text="${user.last_name}"></td>
-            <td th:text="${user.username}"></td>
-            <td th:text="${user.mail_address}"></td>
-            <td><a th:href="@{showFormForUpdate/{id}(id=${user.id})}" class="btn btn-secondary">Update</a>
-                <a th:href="@{deleteUser/{id}(id=${user.id})}" class="btn btn-danger">Delete</a> </td>
+        <tr th:each="clan:${listClans}">
+            <td th:text="${clan.id}"></td>
+            <td th:text="${clan.name}"></td>
+            <td th:text="${clan.language}"></td>
+            <td th:text="${clan.description}"></td>
+            <td><a th:href="@{showClanFormForUpdate/{id}(id=${clan.id})}" class="btn btn-secondary">Update</a>
+                <a th:href="@{deleteClan/{id}(id=${clan.id})}" class="btn btn-danger">Delete</a> </td>
+
         </tr>
         </tbody>
 

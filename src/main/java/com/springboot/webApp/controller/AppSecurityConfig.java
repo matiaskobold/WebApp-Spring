@@ -43,10 +43,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/clans/{clanId}/users").permitAll()  //permits /login (mapped to HomeController.loginPage()) through Spring Sec so everyone can access login page
+                .antMatchers("/clans/{clanId}/users").permitAll()
                 .antMatchers("/clans/{clanId}/users/{userId}").permitAll()
                 .antMatchers("/clans").permitAll()
                 .antMatchers("/clans/{clanId}").permitAll()
+                .antMatchers("/login").permitAll() //permits /login (mapped to HomeController.loginPage()) through Spring Sec so everyone can access login page
                 .anyRequest().authenticated()   //all others requests should be authenticated
                 .and()
                 .formLogin()

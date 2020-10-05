@@ -23,16 +23,16 @@ public class Clan {
     private String language;
 
     @NotNull
-    private String country;
+    private String name;
 
     public Clan() {
 
     }
 
-    public Clan(@NotNull String description, @NotNull String language, @NotNull String country) {
+    public Clan(@NotNull String description, @NotNull String language, @NotNull String name) {
         this.description = description;
         this.language = language;
-        this.country = country;
+        this.name = name;
     }
 
     public Long getId() {
@@ -59,11 +59,11 @@ public class Clan {
         this.language = language;
     }
 
-    public String getCountry() {
-        return country;
+    public String getName() {
+        return name;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setName(String country) {
+        this.name = country;
     }
 }

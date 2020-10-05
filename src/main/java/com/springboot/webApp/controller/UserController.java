@@ -17,7 +17,7 @@ public class UserController {
     @GetMapping("/usersTable")
     public String viewUsersTable(Model model){
         model.addAttribute("listUsers", userRepository.findAll());
-        return "usersTableIndex";
+        return "usersTable";
     }
     @GetMapping("/showNewUserForm")
     public String showNewUserForm(Model model){
@@ -33,8 +33,8 @@ public class UserController {
         userRepository.save(user);
         return "redirect:/usersTable";
     }
-    @GetMapping("/showFormForUpdate/{id}")
-    public String showFormForUpdate(@PathVariable(value="id") long id, Model model){
+    @GetMapping("/showUserFormForUpdate/{id}")
+    public String showUserFormForUpdate(@PathVariable(value="id") long id, Model model){
         //get User from the service
         User user = userRepository.getOne(id);
         //set User as a model attribute to pre-populate the next form data (in update_user)

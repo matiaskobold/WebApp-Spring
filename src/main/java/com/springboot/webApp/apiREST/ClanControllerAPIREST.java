@@ -3,8 +3,6 @@ package com.springboot.webApp.apiREST;
 import com.springboot.webApp.model.Clan;
 import com.springboot.webApp.repository.ClanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +10,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class ClanController {
+public class ClanControllerAPIREST {
 
     @Autowired
     private ClanRepository clanRepository;
@@ -33,7 +31,7 @@ public class ClanController {
     @PutMapping("/clans/{clanId}")
     public Clan updateClan(@PathVariable Long clanId, @Valid @RequestBody Clan clanRequest){
         return clanRepository.findById(clanId).map(clan -> {
-            clan.setCountry(clanRequest.getCountry());
+            clan.setName(clanRequest.getName());
             clan.setDescription(clanRequest.getDescription());
             clan.setLanguage(clanRequest.getLanguage());
             return clanRepository.save(clan);

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>New Clan</title>
+
+</head>
+<body>
+<div class="container">
+    <h1>New Clan</h1>
+    <hr>
+
+    <form action="#" th:action="@{/saveClan}" th:object="${clan}" method="post">
+        <input type="text" th:field="*{name}" placeholder="Clan's name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{language}" placeholder="Clan's language" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{description}" placeholder="Clan's description" class="form-control mb-4 col-4">
+
+
+        <button type="submit" class="btn btn-primary">Save New Clan</button>
+
+    </form>
+
+
+</div>
+
+</body>
+</html>
