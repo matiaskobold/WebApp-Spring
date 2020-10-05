@@ -5,7 +5,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
+
     <title>Update user</title>
+
+
+
 </head>
 <body>
 <div class="container">
@@ -18,6 +22,10 @@
         <input type="text" th:field="*{last_name}" placeholder="User's new last name" class="form-control mb-4 col-4">
         <input type="text" th:field="*{username}" placeholder="User's new username" class="form-control mb-4 col-4">
         <input type="text" th:field="*{mail_address}" placeholder="User's new mail address" class="form-control mb-4 col-4">
+        <select th:field="*{clan}" class="form-control">
+            <option th:each="clan: ${listClans}" th:value="${clan.id}" th:text="${clan.name}"></option>
+
+        </select>
 
         <button type="submit" class="btn btn-primary">Update User</button>
     </form>
