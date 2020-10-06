@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClanRepository extends JpaRepository<Clan, Long> {
     boolean existsClanByName(String string);
+    Clan findById(Clan clan);
 }

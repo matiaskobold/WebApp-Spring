@@ -22,9 +22,14 @@ public class ClanControllerAPIREST {
         return clanRepository.findAll();
     }
 
-    //POST http://localhost:8080/clans body {"description": "description1",
-    //            "language": "language1",
-    //            "country": "country1"}
+    @GetMapping("/clans/{id}")
+    public ResponseEntity<Clan> getClanById(@PathVariable(value = "id") Long clanId)
+            throws ResourceNotFoundException {
+        Clan clan = clanRepository.findById(clanId)
+                .orElseThrow(() -> new ResourceNotFoundException("Clan not found for this id :: " + clanId));
+        return ResponseEntity.ok().body(clan);
+    }
+
     @PostMapping("/clans")
     public Clan createClan(@Valid @RequestBody Clan clan)  {
             return clanRepository.save(clan);
@@ -32,13 +37,14 @@ public class ClanControllerAPIREST {
     }
 
     @PutMapping("/clans/{clanId}")
-    public Clan updateClan(@PathVariable Long clanId, @Valid @RequestBody Clan clanRequest){
-        return clanRepository.findById(clanId).map(clan -> {
-            clan.setName(clanRequest.getName());
-            clan.setDescription(clanRequest.getDescription());
-            clan.setLanguage(clanRequest.getLanguage());
-            return clanRepository.save(clan);
-        }).orElseThrow(()->new ResourceNotFoundException("ClanId "+clanId+" not found"));
+    public ResponseEntity<Clan> updateClan(@PathVariable(value="clanId") Long clanId, @Valid @RequestBody Clan clanRequest) throws ResourceNotFoundException{
+       Clan clan = clanRepository.findById(clanId)
+               .orElseThrow(()->new ResourceNotFoundException("Clan not found for this ID:: "+clanId));
+       clan.setName(clanRequest.getName());
+       clan.setDescription(clanRequest.getDescription());
+       clan.setLanguage(clanRequest.getLanguage());
+       final Clan updatedClan = clanRepository.save(clan);
+       return ResponseEntity.ok(updatedClan);
     }
 
     @DeleteMapping("/clans/{clanId}")
