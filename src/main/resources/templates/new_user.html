@@ -6,6 +6,9 @@
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
     <title>New user</title>
+    <script>
+
+    </script>
 
 </head>
 <body>
@@ -14,14 +17,14 @@
         <hr>
 
         <form action="#" th:action="@{/saveUser}" th:object="${user}" method="post">
-            <input type="text" th:field="*{first_name}" placeholder="User's first name" class="form-control mb-4 col-4">
-            <input type="text" th:field="*{last_name}" placeholder="User's last name" class="form-control mb-4 col-4">
-            <input type="text" th:field="*{username}" placeholder="User's username" class="form-control mb-4 col-4">
-            <input type="text" th:field="*{mail_address}" placeholder="User's mail address" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{first_name}" th:required="required" placeholder="User's first name" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{last_name}" th:required="required" placeholder="User's last name" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{username}" th:required="required" placeholder="User's username" class="form-control mb-4 col-4">
+            <input type="email" th:field="*{mail_address}" th:required="required" placeholder="User's mail address" class="form-control mb-4 col-4">
             <select th:field="*{clan}" class="form-control">
                 <option th:each="clan: ${listClans}" th:value="${clan.id}" th:text="${clan.name}"></option>
             </select>
-            <button type="submit" class="btn btn-primary">Save New User</button>
+            <button type="submit" class="btn btn-primary" id="submit">Save New User</button>
 
         </form>
 

@@ -2,7 +2,9 @@ package com.springboot.webApp.apiREST;
 
 import com.springboot.webApp.model.Clan;
 import com.springboot.webApp.repository.ClanRepository;
+import jdk.internal.util.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,9 @@ public class ClanControllerAPIREST {
     //            "language": "language1",
     //            "country": "country1"}
     @PostMapping("/clans")
-    public Clan createClan(@Valid @RequestBody Clan clan){
-        return clanRepository.save(clan);
+    public Clan createClan(@Valid @RequestBody Clan clan)  {
+            return clanRepository.save(clan);
+
     }
 
     @PutMapping("/clans/{clanId}")
@@ -35,7 +38,7 @@ public class ClanControllerAPIREST {
             clan.setDescription(clanRequest.getDescription());
             clan.setLanguage(clanRequest.getLanguage());
             return clanRepository.save(clan);
-        }).orElseThrow(()->new ResourceNotFoundException("ClanId"+clanId+" not found"));
+        }).orElseThrow(()->new ResourceNotFoundException("ClanId "+clanId+" not found"));
     }
 
     @DeleteMapping("/clans/{clanId}")
@@ -43,6 +46,6 @@ public class ClanControllerAPIREST {
         return clanRepository.findById(clanId).map(clan->{
             clanRepository.delete(clan);
             return ResponseEntity.ok().build();
-        }).orElseThrow(()->new ResourceNotFoundException("Clan id"+clanId+" not found"));
+        }).orElseThrow(()->new ResourceNotFoundException("Clan id "+clanId+" not found"));
     }
 }

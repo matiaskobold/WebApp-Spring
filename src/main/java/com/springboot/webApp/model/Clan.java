@@ -1,11 +1,8 @@
 package com.springboot.webApp.model;
 
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
@@ -15,21 +12,18 @@ public class Clan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
     private String description;
-
-    @NotNull
     private String language;
 
-    @NotNull
+
+    @NotBlank(message = "Clan name must not be empty")
     private String name;
 
     public Clan() {
 
     }
 
-    public Clan(@NotNull String description, @NotNull String language, @NotNull String name) {
+    public Clan(@NotNull String description, @NotNull String language, @NotBlank String name) {
         this.description = description;
         this.language = language;
         this.name = name;

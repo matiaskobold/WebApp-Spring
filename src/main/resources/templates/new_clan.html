@@ -14,7 +14,7 @@
     <hr>
 
     <form action="#" th:action="@{/saveClan}" th:object="${clan}" method="post">
-        <input type="text" th:field="*{name}" placeholder="Clan's name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{name}" th:required="required" placeholder="Clan's name" class="form-control mb-4 col-4">
         <input type="text" th:field="*{language}" placeholder="Clan's language" class="form-control mb-4 col-4">
         <input type="text" th:field="*{description}" placeholder="Clan's description" class="form-control mb-4 col-4">
 

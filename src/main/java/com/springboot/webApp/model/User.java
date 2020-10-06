@@ -6,6 +6,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
@@ -16,16 +18,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank(message = "User's first name must not be empty")
     private String first_name;
 
-    @NotNull
+    @NotBlank(message = "User's last name must not be empty")
     private String last_name;
 
-    @NotNull
+    @NotBlank(message = "User's username must not be empty")
     private String username;
 
-    @NotNull
+    @NotBlank(message = "User's email must not be empty")
+    @Email
     private String mail_address;
 
 

@@ -14,7 +14,7 @@
 
     <form action="#" th:action="@{/saveClan}" th:object="${clan}" method="post">
         <input type="hidden" th:field="*{id}">
-        <input type="text" th:field="*{name}" placeholder="Clan's new name" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{name}" th:required="required" placeholder="Clan's new name" class="form-control mb-4 col-4">
         <input type="text" th:field="*{language}" placeholder="Clan's new language" class="form-control mb-4 col-4">
         <input type="text" th:field="*{description}" placeholder="Clan's new description" class="form-control mb-4 col-4">
         <button type="submit" class="btn btn-primary">Update Clan</button>
