@@ -14,8 +14,8 @@
     <hr>
 
     <form action="#" th:action="@{/saveUserLogin}" th:object="${userLogin}" method="post">
-        <input type="text" th:field="*{username}" placeholder="New username" class="form-control mb-4 col-4">
-        <input type="text" th:field="*{password}" placeholder="New password" class="form-control mb-4 col-4">
+        <input type="text" th:field="*{username}" th:required="required" placeholder="New username" class="form-control mb-4 col-4">
+        <input type="password" th:field="*{password}" th:required="required" placeholder="New password" class="form-control mb-4 col-4">
 
         <button type="submit" class="btn btn-primary">Save New User Login (account)</button>
 
