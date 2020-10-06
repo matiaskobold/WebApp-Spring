@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  myapp-mysql:
+    image: mysql/mysql-server
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=usuario
+      - MYSQL_DATABASE=proy_isa
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=usuario
+    ports:
+      - 3306:3306
+
+  myapp-main:
+    image: docker-spring-boot
+    depends_on:
+      - myapp-mysql
+    ports:
+      - 8080:8080
+    restart: on-failure
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://myapp-mysql:3306/proy_isa
+    #  - DATABASE_HOST=myapp-mysql
+    #  - DATABASE_PASSWORD=usuario
+    #  - DATABASE_NAME=proy_isa
+    #  - DATABASE_PORT=3306

@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 public class ClanControllerAPIREST {
-
+//fix
     @Autowired
     private ClanRepository clanRepository;
 
