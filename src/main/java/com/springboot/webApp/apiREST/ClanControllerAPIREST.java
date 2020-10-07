@@ -13,9 +13,14 @@ import java.util.List;
 
 @RestController
 public class ClanControllerAPIREST {
-//fix
+
     @Autowired
     private ClanRepository clanRepository;
+
+    @RequestMapping("/test")
+    public @ResponseBody String greeting() {
+        return "Hello, World";
+    }
 
     @GetMapping("/clans")
     public List<Clan> getAllClans(){
