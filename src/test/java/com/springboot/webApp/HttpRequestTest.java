@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.http.HttpMethod.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,7 +72,7 @@ public class HttpRequestTest {
                 equals(ResourceNotFoundException.class));
     }
 
-    // POST http://localhost:8080/clans post correct clan
+    // POST http://localhost:8080/clans post valid clan
 
     @Test
     public void createClanTestValidClan() throws JsonProcessingException, JSONException {
@@ -84,9 +84,11 @@ public class HttpRequestTest {
         JSONObject clanJsonObject = new JSONObject();
         clanJsonObject.put("name", "name1");
 
-        HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);
+        HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);    //Construyo la request entera, con body(en JSON)+header
         ResponseEntity<String> responseEntityStr = restTemplate.
-                postForEntity("http://localhost:" + port + "/clans", request, String.class);
+                postForEntity("http://localhost:" + port + "/clans", request, String.class);    //Al URL le manda la Request y recibe una
+                                                                                                    // ResponseEntity con el Httpstatus.CREATED y
+                                                                                                    //  el body del objeto creado
 
         assertThat(responseEntityStr.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -96,6 +98,7 @@ public class HttpRequestTest {
 
     }
 
+    // POST http://localhost:8080/clans post invalid clan
     @Test
     public void createClanTestInvalidClan() throws JSONException {
         ObjectMapper objectMapper = new ObjectMapper(); //Para Jackson convertir object->Json
@@ -113,5 +116,92 @@ public class HttpRequestTest {
 
     }
 
+    // @PutMapping("/clans/{clanId}")
+    @Test
+    public void testUpdateClanValidClan() throws JSONException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper(); //Para Jackson convertir object->Json
+
+        //Primero tengo que hacer el post por la APIrest para que me de la ID creada, si es que voy a correr este test con todos los otros test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        JSONObject clanJsonObject = new JSONObject();
+        clanJsonObject.put("name", "name1");
+
+        HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);
+        ResponseEntity<String> responseEntityStr = restTemplate.
+                postForEntity("http://localhost:" + port + "/clans", request, String.class);
+
+        assertThat(responseEntityStr.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        //JSonNode me sirve para mappear el body de la responseEntity y poder obtener el los atributos "id", "description", "name" y "language"
+        JsonNode root = objectMapper.readTree(responseEntityStr.getBody());
+        String clanId=root.path("id").asText();
+
+        //Una vez que obtuve el ID, puedo hacer el put en el mismo ID con un "name" nuevo.
+        JSONObject clanJsonObjectUpdated = new JSONObject();
+        clanJsonObjectUpdated.put("name", "nameUpdated");
+        HttpEntity<String> requestUpdated = new HttpEntity<String>(clanJsonObjectUpdated.toString(), headers);
+        ResponseEntity<String> responseEntityStrUpdated = restTemplate.exchange("http://localhost:" + port + "/clans/"+clanId,
+                HttpMethod.PUT,
+                requestUpdated,
+                String.class );
+        assertThat(responseEntityStrUpdated.getStatusCode()).isEqualTo(HttpStatus.OK);
+        root=objectMapper.readTree(responseEntityStrUpdated.getBody());
+        assertThat(root.path("name").asText()).isEqualTo("nameUpdated");
+
+
+    }
+
+    @Test
+    public void testUpdateClanClanNotFound() throws JSONException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper(); //Para Jackson convertir object->Json
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        JSONObject clanJsonObject = new JSONObject();
+        clanJsonObject.put("id", "999");
+        clanJsonObject.put("name", "name1");
+
+        HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);
+
+        ResponseEntity<String> responseEntityStr = restTemplate.exchange("http://localhost:" + port + "/clans/"+999,
+                HttpMethod.PUT,
+                request,
+                String.class );
+
+        assertThat(responseEntityStr.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Test
+    //@DeleteMapping("/clans/{clanId}")
+    public void testDeleteClan() throws JSONException, JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper(); //Para Jackson convertir object->Json
+
+        //Primero tengo que hacer el post por la APIrest para que me de la ID creada, si es que voy a correr este test con todos los otros test
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        JSONObject clanJsonObject = new JSONObject();
+        clanJsonObject.put("name", "name1");
+
+        HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);
+        ResponseEntity<String> responseEntityStr = restTemplate.
+                postForEntity("http://localhost:" + port + "/clans", request, String.class);
+
+        assertThat(responseEntityStr.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        //JSonNode me sirve para mappear el body de la responseEntity y poder obtener el los atributos "id", "description", "name" y "language"
+        JsonNode root = objectMapper.readTree(responseEntityStr.getBody());
+        String clanId=root.path("id").asText();
+
+        //Una vez que obtuve el ID, puedo hacer el delete en el mismo ID.
+
+        ResponseEntity<String> responseEntityDeleted = restTemplate.exchange("http://localhost:" + port + "/clans/"+clanId,
+                HttpMethod.DELETE,
+                request,
+                String.class);
+        assertThat(responseEntityDeleted.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+    }
 
 }
