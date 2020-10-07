@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,7 +44,17 @@ class WebAppApplicationTests {
 		List<Clan> clans = clanRepository.findAll();
 		assertThat(clans).size().isEqualTo(3);
 	}
+	@Test
+	public void testFailClanRepositorySaveMissingName() {
+		Clan clan1 = new Clan();
+		clan1.setLanguage("language1");
+		clan1.setDescription("description1");
+		assertThatExceptionOfType(ConstraintViolationException.class)
+				.isThrownBy(
+						()->clanRepository.save(clan1));
+
+	}
 
 
 
-}
+	}
