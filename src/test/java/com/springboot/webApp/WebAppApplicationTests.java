@@ -53,8 +53,5 @@ class WebAppApplicationTests {
 
     }
 
-    @Test
-    public void testUpdateClanAccepted(){
 
-    }
 }
