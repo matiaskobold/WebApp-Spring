@@ -5,6 +5,7 @@ import com.springboot.webApp.repository.ClanRepository;
 import jdk.internal.util.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +36,15 @@ public class ClanControllerAPIREST {
         return ResponseEntity.ok().body(clan);
     }
 
-    @PostMapping("/clans")
-    public Clan createClan(@Valid @RequestBody Clan clan)  {
+   /* @PostMapping("/clans")
+    public Clan createClan(@Valid @RequestBody Clan clan)  {        //Con ResponseEntity puedo testear mas facil por el httpstatus y el body
             return clanRepository.save(clan);
+    }
+*/
+    @PostMapping("/clans")
+    public ResponseEntity<Clan> createClan(@Valid @RequestBody Clan clan)  {
+            clanRepository.save(clan);
+            return new ResponseEntity<>(clan, HttpStatus.CREATED);
 
     }
 
