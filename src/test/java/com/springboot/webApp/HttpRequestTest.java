@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,9 +85,10 @@ public class HttpRequestTest {
 
         HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);    //Construyo la request entera, con body(en JSON)+header
         ResponseEntity<String> responseEntityStr = restTemplate.
-                postForEntity("http://localhost:" + port + "/clans", request, String.class);    //Al URL le manda la Request y recibe una
-                                                                                                    // ResponseEntity con el Httpstatus.CREATED y
-                                                                                                    //  el body del objeto creado
+                postForEntity("http://localhost:" + port + "/clans", request, String.class);
+        //Al URL le manda la Request y recibe una
+        // ResponseEntity con el Httpstatus.CREATED y
+        //  el body del objeto creado
 
         assertThat(responseEntityStr.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -136,18 +136,18 @@ public class HttpRequestTest {
 
         //JSonNode me sirve para mappear el body de la responseEntity y poder obtener el los atributos "id", "description", "name" y "language"
         JsonNode root = objectMapper.readTree(responseEntityStr.getBody());
-        String clanId=root.path("id").asText();
+        String clanId = root.path("id").asText();
 
         //Una vez que obtuve el ID, puedo hacer el put en el mismo ID con un "name" nuevo.
         JSONObject clanJsonObjectUpdated = new JSONObject();
         clanJsonObjectUpdated.put("name", "nameUpdated");
         HttpEntity<String> requestUpdated = new HttpEntity<String>(clanJsonObjectUpdated.toString(), headers);
-        ResponseEntity<String> responseEntityStrUpdated = restTemplate.exchange("http://localhost:" + port + "/clans/"+clanId,
+        ResponseEntity<String> responseEntityStrUpdated = restTemplate.exchange("http://localhost:" + port + "/clans/" + clanId,
                 HttpMethod.PUT,
                 requestUpdated,
-                String.class );
+                String.class);
         assertThat(responseEntityStrUpdated.getStatusCode()).isEqualTo(HttpStatus.OK);
-        root=objectMapper.readTree(responseEntityStrUpdated.getBody());
+        root = objectMapper.readTree(responseEntityStrUpdated.getBody());
         assertThat(root.path("name").asText()).isEqualTo("nameUpdated");
 
 
@@ -164,10 +164,10 @@ public class HttpRequestTest {
 
         HttpEntity<String> request = new HttpEntity<String>(clanJsonObject.toString(), headers);
 
-        ResponseEntity<String> responseEntityStr = restTemplate.exchange("http://localhost:" + port + "/clans/"+999,
+        ResponseEntity<String> responseEntityStr = restTemplate.exchange("http://localhost:" + port + "/clans/" + 999,
                 HttpMethod.PUT,
                 request,
-                String.class );
+                String.class);
 
         assertThat(responseEntityStr.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -192,11 +192,11 @@ public class HttpRequestTest {
 
         //JSonNode me sirve para mappear el body de la responseEntity y poder obtener el los atributos "id", "description", "name" y "language"
         JsonNode root = objectMapper.readTree(responseEntityStr.getBody());
-        String clanId=root.path("id").asText();
+        String clanId = root.path("id").asText();
 
         //Una vez que obtuve el ID, puedo hacer el delete en el mismo ID.
 
-        ResponseEntity<String> responseEntityDeleted = restTemplate.exchange("http://localhost:" + port + "/clans/"+clanId,
+        ResponseEntity<String> responseEntityDeleted = restTemplate.exchange("http://localhost:" + port + "/clans/" + clanId,
                 HttpMethod.DELETE,
                 request,
                 String.class);
