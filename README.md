@@ -1,9 +1,10 @@
 # webApp-SPRING
 Webapp using SPRING JAVA
 
+1) Si no aparece el .jar después de correrlo una vez el proyecto, hacer desde el directorio del proyecto:
+> mvn clean install
 
-Para correr el proyecto con Docker:
-Desde el directorio del proyecto:
+2) Para correr el proyecto con Docker, desde el directorio del proyecto:
 
 > docker build -f Dockerfile -t docker-spring-boot .
 
