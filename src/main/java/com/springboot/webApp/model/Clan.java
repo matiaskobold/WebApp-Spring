@@ -60,4 +60,14 @@ public class Clan {
     public void setName(String country) {
         this.name = country;
     }
+
+    @Override
+    public String toString() {
+        return "[{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", language='" + language + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
