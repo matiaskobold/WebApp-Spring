@@ -1,0 +1,4 @@
+Clan name no es unique. User email y name no son unique. Los primeros dos no son necesariamente un problema en el funcionamiento de la app, si muestro los nombres como nombre+#+id, estilo Battle.net.
+Email no unique hay que corregirlo.
+
+Userlogin username no es unique -> Si genero dos users con el mismo username en la DB, el login falla critico. 
