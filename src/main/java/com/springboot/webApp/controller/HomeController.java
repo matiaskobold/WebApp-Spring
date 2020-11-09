@@ -6,6 +6,7 @@ import com.springboot.webApp.model.UserLogin;
 import com.springboot.webApp.repository.UserRepository;
 import com.springboot.webApp.service.UserLoginService;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,6 +34,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.xml.ws.Response;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -79,7 +83,7 @@ public class HomeController {
 
 
     @RequestMapping("/publicAPI")
-    public String publicAPI(Model model, RestTemplate restTemplate) throws JsonProcessingException {
+    public String publicAPI(Model model, RestTemplate restTemplate) throws JsonProcessingException, JSONException {
         int gameSteamID=730;
         int numberOfNews=3;
         int maxLengthOfNews=300;
@@ -105,10 +109,20 @@ public class HomeController {
                 "&format="+formatResponse,
                 String.class);
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode root = objectMapper.readTree(responseStr.getBody());
+        List<String> newsLinks = new ArrayList<>();
+        for (int i=0; i<numberOfNews;i++) {
+            String ej = root.get("appnews").get("newsitems").get(i).get("url").asText();
+            System.out.println(ej);
+            newsLinks.add(ej);
+            }
 
 
-        model.addAttribute("response", responseStr);
-        System.out.println(responseStr);
+
+        model.addAttribute("response", newsLinks);
+        model.addAttribute("game", gameSteamID);
+       // System.out.println(responseStr.getBody());
         return "publicApi";
     }
 

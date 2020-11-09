@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>PublicAPI</title>
+    <title>STEAM API</title>
+
+
 </head>
 <body>
-<p th:text="${response}"></p>
+
+<div class="container my-2">
+
+    <h1>STEAM NOTICIAS PARA</h1> <h1 th:text="${game}"></h1>
+    <ul th:each="news: ${response}">
+        <li th:text="${news}"></li>
+    </ul>
+
+</div>
+<a href="/logout">log out</a> <br>
+<a href="/">go home</a>
 </body>
 </html>
